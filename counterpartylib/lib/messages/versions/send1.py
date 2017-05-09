@@ -68,9 +68,9 @@ def compose (db, source, destination, asset, quantity):
         raise exceptions.ComposeError('quantity must be an int (in satoshi)')
 
     # Only for outgoing (incoming will overburn).
-    balances = list(cursor.execute('''SELECT * FROM balances WHERE (address = ? AND asset = ?)''', (source, asset)))
-    if not balances or balances[0]['quantity'] < quantity:
-        raise exceptions.ComposeError('insufficient funds')
+    # balances = list(cursor.execute('''SELECT * FROM balances WHERE (address = ? AND asset = ?)''', (source, asset)))
+    # if not balances or balances[0]['quantity'] < quantity:
+        # raise exceptions.ComposeError('insufficient funds')
 
     block_index = util.CURRENT_BLOCK_INDEX
 

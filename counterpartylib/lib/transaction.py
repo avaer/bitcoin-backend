@@ -341,7 +341,7 @@ def construct (db, tx_info, encoding='auto',
     source_is_p2sh = script.is_p2sh(source)
 
     # Sanity checks.
-    if exact_fee and not isinstance(exact_fee, int):
+    if exact_fee is not None and not isinstance(exact_fee, int):
         raise exceptions.TransactionError('Exact fees must be in satoshis.')
     if not isinstance(fee_provided, int):
         raise exceptions.TransactionError('Fee provided must be in satoshis.')
@@ -498,7 +498,7 @@ def construct (db, tx_info, encoding='auto',
 
         # If exact fee is specified, use that. Otherwise, calculate size of tx
         # and base fee on that (plus provide a minimum fee for selling BTC).
-        if exact_fee:
+        if exact_fee is not None:
             final_fee = exact_fee
         else:
             final_fee = max(fee_provided, necessary_fee)

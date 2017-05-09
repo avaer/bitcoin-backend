@@ -169,31 +169,6 @@ def validate (db, source, destination, asset, quantity, divisible, callable_, ca
             problems.append('a subasset must be a numeric asset')
 
 
-    
-    # Check for existence of fee funds.
-    if quantity or (block_index >= 315000 or config.TESTNET):   # Protocol change.
-        if not reissuance or (block_index < 310000 and not config.TESTNET):  # Pay fee only upon first issuance. (Protocol change.)
-            cursor = db.cursor()
-            cursor.execute('''SELECT * FROM balances \
-                              WHERE (address = ? AND asset = ?)''', (source, config.XCP))
-            balances = cursor.fetchall()
-            cursor.close()
-            if util.enabled('numeric_asset_names'):  # Protocol change.
-                if subasset_longname is not None and util.enabled('subassets'): # Protocol change.
-                    # subasset issuance is 0.25
-                    fee = int(0.25 * config.UNIT)
-                elif len(asset) >= 13:
-                    fee = 0
-                else:
-                    fee = int(0.5 * config.UNIT)
-            elif block_index >= 291700 or config.TESTNET:     # Protocol change.
-                fee = int(0.5 * config.UNIT)
-            elif block_index >= 286000 or config.TESTNET:   # Protocol change.
-                fee = 5 * config.UNIT
-            elif block_index > 281236 or config.TESTNET:    # Protocol change.
-                fee = 5
-            if fee and (not balances or balances[0]['quantity'] < fee):
-                problems.append('insufficient funds')
 
     if not (block_index >= 317500 or config.TESTNET):  # Protocol change.
         if len(description) > 42:

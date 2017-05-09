@@ -90,8 +90,8 @@ def check_backend_state():
     block_hash = backend.getblockhash(block_count)
     cblock = backend.getblock(block_hash)
     time_behind = time.time() - cblock.nTime   # TODO: Block times are not very reliable.
-    if time_behind > 60 * 60 * 2:   # Two hours.
-        raise BackendError('Bitcoind is running about {} hours behind.'.format(round(time_behind / 3600)))
+    # if time_behind > 60 * 60 * 2:   # Two hours.
+        # raise BackendError('Bitcoind is running about {} hours behind.'.format(round(time_behind / 3600)))
     logger.debug('Backend state check passed.')
 
 class DatabaseError(Exception):
